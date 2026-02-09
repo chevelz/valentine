@@ -74,25 +74,19 @@ opacity:.7;
 100%{transform:translateY(-100vh);opacity:0;}
 }
 
-/* Intro */
-#intro{
-position:fixed;
-inset:0;
-background:linear-gradient(135deg,#ff9a9e,#fad0c4);
-display:flex;
+/* Hidden love screen */
+#love{
+display:none;
+flex-direction:column;
 justify-content:center;
 align-items:center;
-z-index:10;
-color:white;
-font-size:28px;
+height:100vh;
 text-align:center;
+color:white;
 }
 
-/* Heart */
 .big-heart{
 font-size:120px;
-color:#ff4d6d;
-position:relative;
 }
 
 .ca{
@@ -100,22 +94,20 @@ position:absolute;
 top:50%;
 left:50%;
 transform:translate(-50%,-55%);
-color:white;
 font-size:28px;
 font-weight:bold;
 }
+
 </style>
 </head>
 
 <body>
 
-<div id="intro">Tap to begin 💖</div>
-
 <audio id="song" preload="auto">
 <source src="radiance.mp3" type="audio/mpeg">
 </audio>
 
-<div class="card">
+<div class="card" id="card">
 <h1>Will you be my Valentine? 💘</h1>
 <div class="names">Chevron 💖 Angelica</div>
 
@@ -125,26 +117,28 @@ font-weight:bold;
 </div>
 </div>
 
+<div id="love">
+<div style="position:relative;">
+<span class="big-heart">❤️</span>
+<span class="ca">C + A</span>
+</div>
+
+<h1>
+Angelica said YES 🥹💘<br><br>
+Chevron & Angelica forever 💖
+</h1>
+</div>
+
 <script>
 const noBtn=document.getElementById("no");
 const yesBtn=document.getElementById("yes");
-const intro=document.getElementById("intro");
 const song=document.getElementById("song");
+const card=document.getElementById("card");
+const love=document.getElementById("love");
 
 let scale=1;
-let audioUnlocked=false;
 
-// unlock audio on intro tap (iphone fix)
-intro.onclick=()=>{
-song.play().then(()=>{
-song.pause();
-song.currentTime=0;
-audioUnlocked=true;
-});
-intro.remove();
-};
-
-// no button dodge
+// No button dodge
 function moveNo(){
 scale-=0.15;
 if(scale<0.3) scale=0.3;
@@ -158,44 +152,17 @@ noBtn.style.transform=`translate(${x}px,${y}px) scale(${scale})`;
 noBtn.addEventListener("mouseenter",moveNo);
 noBtn.addEventListener("touchstart",moveNo);
 
-// YES CLICK
+// YES CLICK (music + swap views)
 yesBtn.onclick=()=>{
 
-if(audioUnlocked){
-song.play();
-}
+song.play(); // DIRECT USER CLICK = SAFARI OK
 
-// delay page swap so safari keeps audio
-setTimeout(()=>{
-
-document.body.innerHTML=`
-<div style="
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-height:100vh;
-background:linear-gradient(135deg,#ff9a9e,#fad0c4);
-font-family:Arial;
-text-align:center;
-">
-
-<div class="big-heart">❤️
-  <div class="ca">C + A</div>
-</div>
-
-<h1 style="color:white;margin-top:20px;">
-Angelica said YES 🥹💘<br><br>
-POOKIES FOREVER YAYAYAYAY 💖
-</h1>
-
-</div>`;
-
-},300);
+card.style.display="none";
+love.style.display="flex";
 
 };
 
-// floating hearts
+// Floating hearts
 setInterval(()=>{
 const heart=document.createElement("div");
 heart.className="heart";
