@@ -134,7 +134,7 @@ const song=document.getElementById("song");
 let scale=1;
 let audioUnlocked=false;
 
-// Unlock audio on first tap (iPhone fix)
+// unlock audio on intro tap (iphone fix)
 intro.onclick=()=>{
 song.play().then(()=>{
 song.pause();
@@ -144,7 +144,7 @@ audioUnlocked=true;
 intro.remove();
 };
 
-// No button shrink + dodge
+// no button dodge
 function moveNo(){
 scale-=0.15;
 if(scale<0.3) scale=0.3;
@@ -165,6 +165,9 @@ if(audioUnlocked){
 song.play();
 }
 
+// delay page swap so safari keeps audio
+setTimeout(()=>{
+
 document.body.innerHTML=`
 <div style="
 display:flex;
@@ -183,13 +186,16 @@ text-align:center;
 
 <h1 style="color:white;margin-top:20px;">
 Angelica said YES 🥹💘<br><br>
-Chevron & Angelica forever 💖
+POOKIES FOREVER YAYAYAYAY 💖
 </h1>
 
 </div>`;
+
+},300);
+
 };
 
-// Floating hearts
+// floating hearts
 setInterval(()=>{
 const heart=document.createElement("div");
 heart.className="heart";
