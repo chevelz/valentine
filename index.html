@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Chevron 💖 Angelica</title>
+
+<style>
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+font-family:Arial;
+overflow:hidden;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:20px;
+text-align:center;
+width:90%;
+max-width:350px;
+box-shadow:0 10px 30px rgba(0,0,0,.2);
+z-index:2;
+}
+
+h1{color:#ff4d6d;}
+
+.names{color:#555;margin-bottom:15px;}
+
+.buttons{
+position:relative;
+height:120px;
+margin-top:20px;
+}
+
+button{
+padding:12px 22px;
+border:none;
+border-radius:25px;
+font-size:16px;
+cursor:pointer;
+position:absolute;
+transition:.2s ease;
+}
+
+#yes{
+background:#ff4d6d;
+color:white;
+left:20px;
+}
+
+#no{
+background:#ccc;
+right:20px;
+}
+
+/* Floating hearts */
+.heart{
+position:absolute;
+bottom:-20px;
+font-size:20px;
+animation:float 6s linear infinite;
+opacity:.7;
+}
+
+@keyframes float{
+0%{transform:translateY(0);opacity:1;}
+100%{transform:translateY(-100vh);opacity:0;}
+}
+
+/* Intro */
+#intro{
+position:fixed;
+inset:0;
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:10;
+color:white;
+font-size:28px;
+text-align:center;
+}
+
+/* Heart */
+.big-heart{
+font-size:120px;
+color:#ff4d6d;
+position:relative;
+}
+
+.ca{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-55%);
+color:white;
+font-size:28px;
+font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div id="intro">Tap to begin 💖</div>
+
+<audio id="song" preload="auto">
+<source src="radiance.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card">
+<h1>Will you be my Valentine? 💘</h1>
+<div class="names">Chevron 💖 Angelica</div>
+
+<div class="buttons">
+<button id="yes">Yes 💕</button>
+<button id="no">No 😢</button>
+</div>
+</div>
+
+<script>
+const noBtn=document.getElementById("no");
+const yesBtn=document.getElementById("yes");
+const intro=document.getElementById("intro");
+const song=document.getElementById("song");
+
+let scale=1;
+let audioUnlocked=false;
+
+// Unlock audio on first tap (iPhone fix)
+intro.onclick=()=>{
+song.play().then(()=>{
+song.pause();
+song.currentTime=0;
+audioUnlocked=true;
+});
+intro.remove();
+};
+
+// No button shrink + dodge
+function moveNo(){
+scale-=0.15;
+if(scale<0.3) scale=0.3;
+
+const x=Math.random()*120-60;
+const y=Math.random()*60-30;
+
+noBtn.style.transform=`translate(${x}px,${y}px) scale(${scale})`;
+}
+
+noBtn.addEventListener("mouseenter",moveNo);
+noBtn.addEventListener("touchstart",moveNo);
+
+// YES CLICK
+yesBtn.onclick=()=>{
+
+if(audioUnlocked){
+song.play();
+}
+
+document.body.innerHTML=`
+<div style="
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+font-family:Arial;
+text-align:center;
+">
+
+<div class="big-heart">❤️
+  <div class="ca">C + A</div>
+</div>
+
+<h1 style="color:white;margin-top:20px;">
+Angelica said YES 🥹💘<br><br>
+Chevron & Angelica forever 💖
+</h1>
+
+</div>`;
+};
+
+// Floating hearts
+setInterval(()=>{
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="💖";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=Math.random()*20+15+"px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),6000);
+},500);
+</script>
+
+</body>
+</html>
